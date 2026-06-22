@@ -45,6 +45,9 @@ async function handleCopy() {
       <button type="button" class="ghost" @click="handleCopy">
         {{ copied ? 'Copied!' : 'Copy' }}
       </button>
+      <RouterLink class="ghost link-button" :to="{ name: 'link-stats', params: { id: link.id } }">
+        Stats
+      </RouterLink>
       <RouterLink class="ghost link-button" :to="{ name: 'link-edit', params: { id: link.id } }">
         Edit
       </RouterLink>
