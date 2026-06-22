@@ -1,50 +1,110 @@
-# url-shortener-frontend
+# URL Shortener Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue 3 single-page application for managing shortened links. Authenticated users can create, edit, and delete links, copy short URLs, and view click analytics. The app talks to a [Laravel API](https://github.com/gustavopatrocinio/url-shortener-api) over REST with Bearer token authentication (Laravel Sanctum).
 
-## Recommended IDE Setup
+## Features
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- User registration and login
+- Dashboard with a list of the authenticated user's links
+- Create and edit links (original URL, optional custom slug, optional expiration)
+- Copy short URL to clipboard
+- Delete links with confirmation
+- Per-link statistics: total clicks and a 7-day line chart
 
-## Recommended Browser Setup
+## Tech Stack
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+| Layer | Technology |
+| --- | --- |
+| Framework | [Vue 3](https://vuejs.org/) (Composition API, `<script setup>`) |
+| Build tool | [Vite](https://vite.dev/) |
+| Routing | [Vue Router](https://router.vuejs.org/) |
+| HTTP client | [Axios](https://axios-http.com/) |
+| Charts | [Chart.js](https://www.chartjs.org/) + [vue-chartjs](https://vue-chartjs.org/) |
+| Unit tests | [Vitest](https://vitest.dev/) + [Vue Test Utils](https://test-utils.vuejs.org/) |
+| Linting | ESLint, Oxlint, Prettier |
 
-## Customize configuration
+## Prerequisites
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Node.js** `^22.18.0` or `>=24.12.0` (see `package.json` → `engines`)
+- **npm**
+- The **backend API** running locally — this frontend does not work standalone. Clone and start the API first:
 
-## Project Setup
+  **[url-shortener-api](https://github.com/gustavopatrocinio/url-shortener-api)**
 
-```sh
-npm install
+  Follow the setup instructions in that repository (`composer install`, `.env`, migrations, `php artisan serve`, etc.).
+
+## Environment Variables
+
+Copy the example file and adjust values for your machine:
+
+```bash
+cp .env.example .env
 ```
 
-### Compile and Hot-Reload for Development
+| Variable | Required | Description |
+| --- | --- | --- |
+| `VITE_API_URL` | Yes | Base URL for API requests. With the default Laravel `api` route prefix and `php artisan serve`, use `http://127.0.0.1:8000/api`. |
+| `VITE_SHORT_URL_BASE` | No | Public base URL used to build short links in the UI when the API does not return `base_url` (e.g. `http://127.0.0.1:8000`). |
 
-```sh
-npm run dev
+Example `.env`:
+
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
+VITE_SHORT_URL_BASE=http://127.0.0.1:8000
 ```
 
-### Compile and Minify for Production
+> `.env` is gitignored. Only `.env.example` is committed.
 
-```sh
-npm run build
+## Local Development
+
+1. Start the [backend API](https://github.com/gustavopatrocinio/url-shortener-api) (typically on port `8000`).
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create and configure `.env` (see above).
+
+4. Start the dev server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the URL printed by Vite (usually `http://localhost:5173`).
+
+Register a user or log in with an existing account. All routes except `/login` and `/register` require a valid token stored in `localStorage`.
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start Vite dev server with hot reload |
+| `npm run build` | Production build to `dist/` |
+| `npm run preview` | Preview the production build locally |
+| `npm run test:unit` | Run Vitest unit tests |
+| `npm run lint` | Run Oxlint and ESLint |
+| `npm run format` | Format source files with Prettier |
+
+## Project Structure
+
+```
+src/
+├── components/     # Reusable UI (auth forms, link table, chart, etc.)
+├── composables/    # Shared composition functions (e.g. clipboard)
+├── router/         # Routes and auth navigation guards
+├── services/       # Axios client and API modules
+├── utils/          # Validation, link/stats helpers
+└── views/          # Page-level components
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Related Repositories
 
-```sh
-npm run test:unit
-```
+- **Frontend (this repo):** [github.com/gustavopatrocinio/url-shortener-frontend](https://github.com/gustavopatrocinio/url-shortener-frontend)
+- **Backend API:** [github.com/gustavopatrocinio/url-shortener-api](https://github.com/gustavopatrocinio/url-shortener-api)
 
-### Lint with [ESLint](https://eslint.org/)
+## License
 
-```sh
-npm run lint
-```
+Private / portfolio project. See repository settings for usage terms.
