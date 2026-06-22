@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import { isAuthenticated } from '@/services/auth'
 import DashboardView from '@/views/DashboardView.vue'
+import LinkFormView from '@/views/LinkFormView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 
@@ -24,6 +25,18 @@ const router = createRouter({
       path: '/',
       name: 'dashboard',
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/links/new',
+      name: 'link-create',
+      component: LinkFormView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/links/:id/edit',
+      name: 'link-edit',
+      component: LinkFormView,
       meta: { requiresAuth: true },
     },
   ],
