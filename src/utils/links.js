@@ -51,3 +51,55 @@ export function extractLinksPayload(data) {
     baseUrl,
   }
 }
+
+export function toDatetimeLocalValue(value) {
+  if (!value) {
+    return ''
+  }
+
+  const date = new Date(value)
+
+  if (Number.isNaN(date.getTime())) {
+    return ''
+  }
+
+  const pad = (part) => String(part).padStart(2, '0')
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`
+}
+
+export function fromDatetimeLocalValue(value) {
+  if (!value) {
+    return null
+  }
+
+  const date = new Date(value)
+
+  if (Number.isNaN(date.getTime())) {
+    return null
+  }
+
+  return date.toISOString()
+}
+
+export function buildLinkPayload(form, { isEditing = false } = {}) {
+  const payload = {
+    original_url: form.originalUrl.trim(),
+  }
+
+  const slug = form.slug.trim()
+
+  if (slug) {
+    payload.slug = slug
+  } else if (isEditing) {
+    payload.slug = null
+  }
+
+  const expiresAt = fromDatetimeLocalValue(form.expiresAt)
+
+  if (expiresAt || isEditing) {
+    payload.expires_at = expiresAt
+  }
+
+  return payload
+}
