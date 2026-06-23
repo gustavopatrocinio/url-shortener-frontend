@@ -2,6 +2,12 @@
 
 Vue 3 single-page application for managing shortened links. Authenticated users can create, edit, and delete links, copy short URLs, and view click analytics. The app talks to a [Laravel API](https://github.com/gustavopatrocinio/url-shortener-api) over REST with Bearer token authentication (Laravel Sanctum).
 
+## Live Demo
+
+**[https://url-shortener-frontend-amber.vercel.app/](https://url-shortener-frontend-amber.vercel.app/)**
+
+Deployed on [Vercel](https://vercel.com/). Requires the backend API to be running and configured via environment variables in the Vercel project settings.
+
 ## Features
 
 - User registration and login
