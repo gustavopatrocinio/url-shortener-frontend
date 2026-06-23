@@ -7,12 +7,17 @@ export function truncateUrl(url, maxLength = 48) {
 }
 
 export function buildShortUrl(link, baseUrl) {
+  const base = (baseUrl ?? '').replace(/\/$/, '')
+
+  if (base && link.slug) {
+    return `${base}/${link.slug}`
+  }
+
   if (link.shortUrl) {
     return link.shortUrl
   }
 
-  const base = (baseUrl ?? '').replace(/\/$/, '')
-  return `${base}/${link.slug}`
+  return link.slug ? `/${link.slug}` : ''
 }
 
 export function formatExpiresAt(value) {
@@ -32,7 +37,7 @@ export function normalizeLink(link) {
     id: link.id,
     originalUrl: link.original_url ?? link.originalUrl ?? link.url ?? '',
     slug: link.slug ?? '',
-    clicks: link.clicks ?? link.click_count ?? link.total_clicks ?? 0,
+    clicks: link.clicks ?? link.clicks_count ?? link.click_count ?? link.total_clicks ?? 0,
     expiresAt: link.expires_at ?? link.expiresAt ?? null,
     shortUrl: link.short_url ?? link.shortUrl ?? null,
   }
